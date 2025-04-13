@@ -1,19 +1,23 @@
 simulacion:
-  resolucion: [1920,1080]
-  cantidad: 50
+  resolucion: [1900,1050]
+  cantidad.P: 50
+  cantidad.L: 50
   dt: 0.5
 
 objetos:
-  masa:
-    mu: 100000
-    sigma: 50000
+  masa.P:
+    mu: 300000
+    sigma: 10000
+  masa.L:
+    mu: 300
+    sigma: 50
   posicion_x:
-    min: 0
-    max: 1920
+    min: 100
+    max: 1800
   posicion_y:
-    min: 0
-    max: 1080
+    min: 100
+    max: 1000
   velocidad:
-    min: -5
-    max: 5
+    min: -0.5
+    max: 0.5
   

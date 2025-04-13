@@ -1,7 +1,7 @@
 import pygame
 import sys
-from processing.objects import Planeta
-from processing.calculations import calcular_fuerza, generar_planetas
+from processing.objects import Planeta, Luna
+from processing.calculations import calcular_fuerza, generar_planetas, generar_lunas, asignar
 import yaml
 
 def cargar_config(ruta="config.yaml"):
@@ -17,12 +17,20 @@ pantalla = pygame.display.set_mode(tuple(config["simulacion"]["resolucion"]))
 pygame.display.set_caption("Simulación gravitacional")
 reloj = pygame.time.Clock()
 
+planetas = generar_planetas(config['simulacion']['cantidad.P'])
+
+lunas=generar_lunas(config['simulacion']['cantidad.L'])
+
+asignar(planetas,lunas)
+
+cuerpos=planetas+lunas
+# planetas.extend(lunas)
 
 
-planetas = generar_planetas(config['simulacion']['cantidad'])
+fuerza_cuerpos_x = [0.0]*len(cuerpos)
+fuerza_cuerpos_y = [0.0]*len(cuerpos)
 
-fuerza_planetas_x = [0.0]*len(planetas)
-fuerza_planetas_y = [0.0]*len(planetas)
+
 
 
 corriendo = True
@@ -33,26 +41,26 @@ while corriendo:
 
     pantalla.fill((0, 0, 20))  
 
+
     # Aplicar gravedad y actualizar
-    for i in range(len(planetas)-1):
-        for j in range(i+1,len(planetas)):
-            fx,fy=calcular_fuerza(planetas[i],planetas[j])
+    for i in range(len(cuerpos)-1):
+        for j in range(i+1,len(cuerpos)):
+            fx,fy=calcular_fuerza(cuerpos[i],cuerpos[j])
 
-            fuerza_planetas_x[i]+=fx
-            fuerza_planetas_y[i]+=fy
+            fuerza_cuerpos_x[i]+=fx
+            fuerza_cuerpos_y[i]+=fy
 
-            fuerza_planetas_x[j]-=fx
-            fuerza_planetas_y[j]-=fy
+            fuerza_cuerpos_x[j]-=fx
+            fuerza_cuerpos_y[j]-=fy
     
-    # print([fuerza_planetas_x])
-    # print(fuerza_planetas_y)
+    for i in range(len(cuerpos)):
+        cuerpos[i].aplicar_fuerza(fuerza_cuerpos_x[i],fuerza_cuerpos_y[i],config['simulacion']['dt'])
+       
     
-    for i in range(len(planetas)):
-        planetas[i].aplicar_fuerza(fuerza_planetas_x[i],fuerza_planetas_y[i],config['simulacion']['dt'])
-        
-    for i in range(len(planetas)):
-        planetas[i].dibujar(pantalla)
+    for i in range(len(cuerpos)):
+        cuerpos[i].dibujar(pantalla)
 
+    
     pygame.display.flip()
     reloj.tick(60)
 

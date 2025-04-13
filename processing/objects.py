@@ -1,8 +1,7 @@
 from abc import ABC, abstractmethod
-import random 
-import pygame
+from processing.Figuras import Figura
 import numpy as np
-
+import random
 class CuerpoCeleste(ABC):
     
     @abstractmethod
@@ -11,51 +10,6 @@ class CuerpoCeleste(ABC):
         self.posicion_y=posicion[1]
         self.velocidad_x=velocidad[0]
         self.velocidad_y=velocidad[1]
-    
-class Figura(ABC):
-    def __init__(self, masa):
-        self.masa = masa
-        self.color = (
-            random.randint(50, 255),
-            random.randint(50, 255),
-            random.randint(50, 255)
-        )
-        self.tipo_figura = random.choice(["circulo", "rectangulo", "triangulo"])
-        # self.radio_base = 5
-        self.radio = np.log(self.masa)+self.masa*0.00001
-
-
-    def dibujar(self, pantalla):
-        x = self.posicion_x
-        y = self.posicion_y 
-        if self.tipo_figura == "circulo":
-            pygame.draw.circle(
-                pantalla,
-                self.color,
-                (int(x), int(y)),
-                int(self.radio)
-            )
-        elif self.tipo_figura == "rectangulo":
-            rect = pygame.Rect(
-                x - self.radio,
-                y - self.radio,
-                self.radio * 2,
-                self.radio * 2
-            )
-            pygame.draw.rect(pantalla, self.color, rect)
-        elif self.tipo_figura == "triangulo":
-            puntos = [
-                (x- self.radio, y - self.radio),
-                (x + self.radio, y - self.radio),
-                (x, y + self.radio)
-            ]
-            pygame.draw.polygon(pantalla, self.color, puntos)
-
-
-class Planeta (CuerpoCeleste,Figura):
-    def __init__ (self,masa,posicion,velocidad):
-        CuerpoCeleste.__init__(self,posicion,velocidad)
-        Figura.__init__(self,masa)
 
     def aplicar_fuerza(self, fuerza_x, fuerza_y, delta_time):
         # F = m*a → a = F/m
@@ -69,5 +23,32 @@ class Planeta (CuerpoCeleste,Figura):
         # Actualizar posición (x = x0 + v*t)
         self.posicion_x += self.velocidad_x * delta_time
         self.posicion_y += self.velocidad_y * delta_time
+    
+class Luna (CuerpoCeleste, Figura):
+    def __init__ (self, masa):
+        Figura.__init__(self,masa)
+        CuerpoCeleste.__init__(self)
 
+class Planeta (CuerpoCeleste,Figura):
+    def __init__ (self,masa,posicion,velocidad):
+        CuerpoCeleste.__init__(self,posicion,velocidad)
+        Figura.__init__(self,masa)
+
+    def agregar_luna (self,luna_a):
+        self.G=6.6746e-11
+        luna_a.posicion_x=self.posicion_x+random.uniform(-50,20)
+        luna_a.posicion_y=self.posicion_y+random.uniform(-20,50)
+
+        self.dx= luna_a.posicion_x-self.posicion_x
+        self.dy= luna_a.posicion_y-self.posicion_y
+
+        r=np.sqrt(self.dx**2+self.dy**2)
+
+        if r == 0:
+            return (0, 0) 
+        
+        VT = np.sqrt(self.G * self.masa / r)
+
+        luna_a.velocidad_x=-VT*(self.dy/r)+self.velocidad_x
+        luna_a.velocidad_y=VT*(self.dx/r)+self.velocidad_y
 
