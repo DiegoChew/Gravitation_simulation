@@ -11,20 +11,26 @@ def cargar_config():
         return yaml.safe_load(archivo) 
 config = cargar_config()
 
+
+#calcula la fuerza entre dos planetas
 def calcular_fuerza(planeta_a, planeta_b):
     G=6.6746e-11
+    e=1e-30
+
+    #vector distancia
     dx=planeta_a.posicion_x - planeta_b.posicion_x
     dy=planeta_a.posicion_y - planeta_b.posicion_y
-    distancia = np.sqrt(dx**2+dy**2)
-        
-    if distancia == 0:
-        return 0, 0
 
-    fuerza = -G*planeta_a.masa*planeta_b.masa/(distancia**2)
-    fx = fuerza * dx / distancia
-    fy = fuerza * dy / distancia
+    r = np.sqrt(dx**2+dy**2+e)#e=1e-30 evita division entre 0
+
+    fuerza = -G*planeta_a.masa*planeta_b.masa/(r**2) #F=-G(m1*m2)/r^2
+
+    fx = fuerza * dx / r #componente en x de F
+    fy = fuerza * dy / r #componente en y de F
+
     return fx, fy
 
+#De una constante 'cantidad' se crea una lista con esa cantidad de planetas
 def generar_planetas(cantidad):
     planetas = []
     for _ in range(cantidad):
@@ -39,6 +45,7 @@ def generar_planetas(cantidad):
     
     return planetas
 
+#Lo mismo pero para lunas
 def generar_lunas(cantidad):
     lunas = []
     for _ in range(cantidad):
@@ -49,6 +56,7 @@ def generar_lunas(cantidad):
     
     return lunas
 
+#asigna de manera "aleatoria", ya que de por si planetas y lunas lo sn, lunas a planetas.
 def asignar(planetas,lunas):
 
     P=len(planetas)
@@ -58,10 +66,11 @@ def asignar(planetas,lunas):
         for j in range(L):
             planetas[j].agregar_luna(lunas[j])
     else:
-        for i in range(P):
-            planetas[i].agregar_luna(lunas[i])
-            if i < (L-P):
-                planetas[i].agregar_luna(lunas[-i])
+        n=0
+        while n < L:
+             for i in range(P):
+                planetas[i].agregar_luna(lunas[n])
+                n=n+1
 
     # lista_n = [i for i in range(n)]
 

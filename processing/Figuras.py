@@ -1,19 +1,30 @@
 import pygame
 import random
 import numpy as np
+import yaml
+from pathlib import Path
 
+def cargar_config():
+    ruta_config = Path(__file__).parent.parent / "config.yaml"
+    
+    with open(ruta_config, 'r') as archivo:
+        return yaml.safe_load(archivo) 
+config = cargar_config()
 
+#Asigna una forma y color aleatorio
 class Figura():
     def __init__(self, masa):
         self.masa = masa
-        self.color = (
+        #color aleatorio
+        self.color = ( 
             random.randint(50, 255),
             random.randint(50, 255),
             random.randint(50, 255)
         )
+        #figura aleatoria
         self.tipo_figura = random.choice(["circulo", "rectangulo", "triangulo"])
-        # self.radio_base = 5
-        self.radio = np.log(self.masa)*0.5
+
+        self.radio = np.log(self.masa)*config['objetos']['escalado'] #tamaño en relación a la masa
 
 
     def dibujar(self, pantalla):

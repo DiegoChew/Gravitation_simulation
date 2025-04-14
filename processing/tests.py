@@ -1,4 +1,6 @@
+#cosas que nada que ver 
 
+############eliminar el archivo
 import random
 RGB=[]
 for i in range (3):
