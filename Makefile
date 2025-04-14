@@ -1,5 +1,9 @@
 SHELL := /bin/bash
 
+VENV = .venv
+PYTHON = $(VENV)/bin/python
+MAIN = main.py
+
 banner:
 	@echo "  ██████████   █████████  ███████████ ██████   ██████"
 	@echo " ░░███░░░░░█  ███░░░░░███░░███░░░░░░█░░██████ ██████ "
@@ -14,7 +18,9 @@ create:
 	python3 -m venv .venv
 
 run:
-	source .venv/bin/activate && echo "Entorno activado (temporalmente en subshell)"
+	@echo "Ejecutando simulación..."
+	@source $(VENV)/bin/activate && \
+	$(PYTHON) $(MAIN)
 
 install:
 	.venv/bin/pip install -r requirements.txt
@@ -26,4 +32,4 @@ typecheck:
 test:
 	python -m unittest discover -s tests
 
-build: banner create run install
+build: banner create install run 
