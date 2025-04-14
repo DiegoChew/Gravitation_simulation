@@ -40,12 +40,15 @@ class Planeta (CuerpoCeleste,Figura):
         Figura.__init__(self,masa)
         
     def agregar_luna (self,luna_a):
-        G=6.6746e-11
+        G=6.674e-11
         e=1e-30
-
+        pi = np.pi 
         #asigna a "luna" una posición cernana al planeta asignado
-        luna_a.posicion_x=self.posicion_x+random.uniform(-50,50)
-        luna_a.posicion_y=self.posicion_y+random.uniform(-50,50)
+        luna_a.posicion_r = random.uniform(70,120)
+        luna_a.posicion_a = random.uniform(0,2*pi)
+        
+        luna_a.posicion_x=self.posicion_x+ luna_a.posicion_r * np.cos(luna_a.posicion_a)
+        luna_a.posicion_y=self.posicion_y+luna_a.posicion_r * np.sin(luna_a.posicion_a)
 
         dx= luna_a.posicion_x-self.posicion_x
         dy= luna_a.posicion_y-self.posicion_y
@@ -56,6 +59,6 @@ class Planeta (CuerpoCeleste,Figura):
         VT = np.sqrt(G * self.masa / r)
 
         #asigna a "luna" su velocidad inicial → v_orbital+v_inicial_planeta
-        luna_a.velocidad_x=-VT*(dy/r)+self.velocidad_x
-        luna_a.velocidad_y=VT*(dx/r)+self.velocidad_y
+        luna_a.velocidad_x=(-5*VT * dy/r)+self.velocidad_x # 5 de escalado (no es fisico solo demostrativo)
+        luna_a.velocidad_y=( 5*VT * dx/r)+self.velocidad_y
 

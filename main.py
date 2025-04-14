@@ -64,7 +64,6 @@ while corriendo:
     #mostrar en pantalla
     for i in range(len(cuerpos)):
         cuerpos[i].dibujar(pantalla)
-
     
     pygame.display.flip()
     reloj.tick(60)

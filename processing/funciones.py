@@ -14,7 +14,7 @@ config = cargar_config()
 
 #calcula la fuerza entre dos planetas
 def calcular_fuerza(planeta_a, planeta_b):
-    G=6.6746e-11
+    G=6.674e-11
     e=1e-30
 
     #vector distancia
@@ -35,6 +35,7 @@ def generar_planetas(cantidad):
     planetas = []
     for _ in range(cantidad):
         masa = random.gauss(config['objetos']['masa.P']['mu'], config['objetos']['masa.P']['sigma'])
+        # masa = random.gauss(1e20, config['objetos']['masa.P']['sigma'])
         x = random.uniform(config['objetos']['posicion_x']['min'], config['objetos']['posicion_x']['max'])
         y = random.uniform(config['objetos']['posicion_y']['min'], config['objetos']['posicion_y']['max'])
         vx = random.uniform(config['objetos']['velocidad']['min'], config['objetos']['velocidad']['max'])
@@ -61,14 +62,14 @@ def asignar(planetas,lunas):
 
     P=len(planetas)
     L=len(lunas)
-    
-    if P>=L:
-        for j in range(L):
-            planetas[j].agregar_luna(lunas[j])
+   
+    if L < P:
+        for i in range(L):
+            planetas[i].agregar_luna(lunas[i])
     else:
         n=0
         while n < L:
-             for i in range(P):
+            for i in range(P):
                 planetas[i].agregar_luna(lunas[n])
                 n=n+1
 
