@@ -16,39 +16,39 @@ class Figura():
     def __init__(self, masa):
         self.masa = masa
         #color aleatorio
-        self.color = ( 
+        self.__color = ( 
             random.randint(100, 255),
             random.randint(100, 255),
             random.randint(100, 255)
         )
         #figura aleatoria
-        self.tipo_figura = random.choice(["circulo", "rectangulo", "triangulo"])
+        self.__tipo_figura = random.choice(["circulo", "rectangulo", "triangulo"])
 
-        self.radio = np.log(self.masa)**config['objetos']['escalado'] #tamaño en relación a la masa
+        self.__r = np.log(self.masa)**config['objetos']['escalado'] #tamaño en relación a la masa
         # self.radio = self.masa*config['objetos']['escalado']
 
     def dibujar(self, pantalla):
         x = self.posicion_x
         y = self.posicion_y 
-        if self.tipo_figura == "circulo":
+        if self.__tipo_figura == "circulo":
             pygame.draw.circle(
                 pantalla,
-                self.color,
+                self.__color,
                 (int(x), int(y)),
-                int(self.radio)
+                int(self.__r)
             )
-        elif self.tipo_figura == "rectangulo":
+        elif self.__tipo_figura == "rectangulo":
             rect = pygame.Rect(
-                x - self.radio,
-                y - self.radio,
-                self.radio * 2,
-                self.radio * 2
+                x - self.__r,
+                y - self.__r,
+                self.__r * 2,
+                self.__r * 2
             )
-            pygame.draw.rect(pantalla, self.color, rect)
-        elif self.tipo_figura == "triangulo":
+            pygame.draw.rect(pantalla, self.__color, rect)
+        elif self.__tipo_figura == "triangulo":
             puntos = [
-                (x- self.radio, y - self.radio),
-                (x + self.radio, y - self.radio),
-                (x, y + self.radio)
+                (x- self.__r, y - self.__r),
+                (x + self.__r, y - self.__r),
+                (x, y + self.__r)
             ]
-            pygame.draw.polygon(pantalla, self.color, puntos)
+            pygame.draw.polygon(pantalla, self.__color, puntos)

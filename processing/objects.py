@@ -33,6 +33,7 @@ class Luna (CuerpoCeleste, Figura):
     def __init__ (self, masa):
         Figura.__init__(self,masa)
         CuerpoCeleste.__init__(self)
+        
 #clase para planetas
 class Planeta (CuerpoCeleste,Figura):
     def __init__ (self,masa,posicion,velocidad):
@@ -56,9 +57,9 @@ class Planeta (CuerpoCeleste,Figura):
         r=np.sqrt(dx**2+dy**2+e) #e=1e-30 evita division entre 0
         
         #velocidad orbital circular
-        VT = np.sqrt(G * self.masa / r)
+        __VT = np.sqrt(G * self.masa / r)
 
         #asigna a "luna" su velocidad inicial → v_orbital+v_inicial_planeta
-        luna_a.velocidad_x=(-5*VT * dy/r)+self.velocidad_x # 5 de escalado (no es fisico solo demostrativo)
-        luna_a.velocidad_y=( 5*VT * dx/r)+self.velocidad_y
+        luna_a.velocidad_x=(-5*__VT * dy/r)+self.velocidad_x # 5 de escalado (no es fisico solo demostrativo)
+        luna_a.velocidad_y=( 5*__VT * dx/r)+self.velocidad_y
 

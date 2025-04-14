@@ -22,12 +22,13 @@ def calcular_fuerza(planeta_a, planeta_b):
     dy=planeta_a.posicion_y - planeta_b.posicion_y
 
     r = np.sqrt(dx**2+dy**2+e)#e=1e-30 evita division entre 0
+    
     if r <= np.log(planeta_a.masa):
         return "FUSION"
-    fuerza = -G*planeta_a.masa*planeta_b.masa/(r**2) #F=-G(m1*m2)/r^2
+    __fuerza = -G*planeta_a.masa*planeta_b.masa/(r**2) #F=-G(m1*m2)/r^2
 
-    fx = fuerza * dx / r #componente en x de F
-    fy = fuerza * dy / r #componente en y de F
+    fx = __fuerza * dx / r #componente en x de F
+    fy = __fuerza * dy / r #componente en y de F
 
     return fx, fy
 
