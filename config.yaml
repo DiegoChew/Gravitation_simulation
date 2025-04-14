@@ -1,24 +1,24 @@
 simulacion:
-  resolucion: [1900,1020]
-  cantidad.P: 1
-  cantidad.L: 1
-  dt: 0.1
+  resolucion: [1900,1000]
+  cantidad.P: 300
+  cantidad.L: 0
+  dt: 0.01
 
 objetos:
   masa.P:
     mu: 1000000000000
-    sigma: 1000000000
+    sigma: 10000000000
   masa.L:
     mu: 1000000
     sigma: 1000
   posicion_x:
-    min: 200
-    max: 1700
+    min: 50
+    max: 1850
   posicion_y:
-    min: 200
-    max: 800
+    min: 50
+    max: 950
   velocidad:
-    min: 0
-    max: 0
-  escalado: 0.3
+    min: -0.2
+    max: 0.2
+  escalado: 0.7
   

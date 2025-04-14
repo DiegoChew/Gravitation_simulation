@@ -17,14 +17,14 @@ class Figura():
         self.masa = masa
         #color aleatorio
         self.color = ( 
-            random.randint(50, 255),
-            random.randint(50, 255),
-            random.randint(50, 255)
+            random.randint(100, 255),
+            random.randint(100, 255),
+            random.randint(100, 255)
         )
         #figura aleatoria
         self.tipo_figura = random.choice(["circulo", "rectangulo", "triangulo"])
 
-        self.radio = np.log(self.masa)*config['objetos']['escalado'] #tamaño en relación a la masa
+        self.radio = np.log(self.masa)**config['objetos']['escalado'] #tamaño en relación a la masa
         # self.radio = self.masa*config['objetos']['escalado']
 
     def dibujar(self, pantalla):
