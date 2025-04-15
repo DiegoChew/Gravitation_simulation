@@ -23,7 +23,7 @@ def calcular_fuerza(planeta_a, planeta_b):
 
     r = np.sqrt(dx**2+dy**2+e)#e=1e-30 evita division entre 0
     
-    if r <= np.log(planeta_a.masa):
+    if r <= np.log(planeta_a.masa)*1.5:
         return "FUSION"
     __fuerza = -G*planeta_a.masa*planeta_b.masa/(r**2) #F=-G(m1*m2)/r^2
 
@@ -93,6 +93,10 @@ def fusion (cuerpo_a,cuerpo_b):
     cuerpo = Planeta(masa=masa_total, posicion=[x, y], velocidad=[vx, vy])
 
     return cuerpo
+
+def union_fuerza(par):
+    cuerpo1, cuerpo2 = par
+    return calcular_fuerza(cuerpo1, cuerpo2)
     # lista_n = [i for i in range(n)]
 
     # lista_m = [i for i in range(m)]

@@ -24,7 +24,7 @@ class Figura():
         #figura aleatoria
         self.__tipo_figura = random.choice(["circulo", "rectangulo", "triangulo"])
 
-        self.__r = np.log(self.masa)**config['objetos']['escalado'] #tamaño en relación a la masa
+        self.__r = config['objetos']['escalado_b']*np.arctan(self.masa)*self.masa**config['objetos']['escalado_a'] + config['objetos']['escalado_c']#tamaño en relación a la masa
         # self.radio = self.masa*config['objetos']['escalado']
 
     def dibujar(self, pantalla):
