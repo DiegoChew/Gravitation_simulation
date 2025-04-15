@@ -1,5 +1,5 @@
 from processing.funciones import calcular_fuerza,generar_planetas, generar_lunas, asignar
-from processing.objects import Planeta
+from processing.objectos import Planeta
 import numpy as np
 import random 
 

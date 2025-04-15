@@ -1,5 +1,5 @@
 import random
-from .objects import Planeta,Luna
+from .objectos import Planeta,Luna
 import yaml
 from pathlib import Path
 import numpy as np

@@ -30,6 +30,6 @@ typecheck:
 	mypy processing/
 
 test:
-	python -m tests.tests_funciones
+	python -m tests.tests_funciones_objetos
 
 build: banner create install run 
