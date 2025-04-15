@@ -59,7 +59,7 @@ def generar_lunas(cantidad):
     
     return lunas
 
-#asigna de manera "aleatoria", ya que de por si planetas y lunas lo sn, lunas a planetas.
+#asigna de manera "aleatoria", ya que de por si planetas y lunas lo son.
 def asignar(planetas,lunas):
 
     P=len(planetas)
@@ -87,9 +87,6 @@ def fusion (cuerpo_a,cuerpo_b):
     vx = (cuerpo_a.velocidad_x * cuerpo_a.masa + cuerpo_b.velocidad_x * cuerpo_b.masa) / masa_total
     vy = (cuerpo_a.velocidad_y * cuerpo_a.masa + cuerpo_b.velocidad_y * cuerpo_b.masa) / masa_total
 
-    # vx = cuerpo_a.velocidad_x + cuerpo_b.velocidad_x
-    # vy = cuerpo_a.velocidad_y + cuerpo_b.velocidad_y
-
     cuerpo = Planeta(masa=masa_total, posicion=[x, y], velocidad=[vx, vy])
 
     return cuerpo
@@ -97,6 +94,3 @@ def fusion (cuerpo_a,cuerpo_b):
 def union_fuerza(par):
     cuerpo1, cuerpo2 = par
     return calcular_fuerza(cuerpo1, cuerpo2)
-    # lista_n = [i for i in range(n)]
-
-    # lista_m = [i for i in range(m)]
