@@ -1,5 +1,5 @@
 import random
-from .objects import Planeta,Luna
+from .objectos import Planeta,Luna
 import yaml
 from pathlib import Path
 import numpy as np
@@ -23,7 +23,7 @@ def calcular_fuerza(planeta_a, planeta_b):
 
     r = np.sqrt(dx**2+dy**2+e)#e=1e-30 evita division entre 0
     
-    if r <= np.log(planeta_a.masa):
+    if r <= np.log(planeta_a.masa)*1.5:
         return "FUSION"
     __fuerza = -G*planeta_a.masa*planeta_b.masa/(r**2) #F=-G(m1*m2)/r^2
 
@@ -59,7 +59,7 @@ def generar_lunas(cantidad):
     
     return lunas
 
-#asigna de manera "aleatoria", ya que de por si planetas y lunas lo sn, lunas a planetas.
+#asigna de manera "aleatoria", ya que de por si planetas y lunas lo son.
 def asignar(planetas,lunas):
 
     P=len(planetas)
@@ -87,12 +87,10 @@ def fusion (cuerpo_a,cuerpo_b):
     vx = (cuerpo_a.velocidad_x * cuerpo_a.masa + cuerpo_b.velocidad_x * cuerpo_b.masa) / masa_total
     vy = (cuerpo_a.velocidad_y * cuerpo_a.masa + cuerpo_b.velocidad_y * cuerpo_b.masa) / masa_total
 
-    # vx = cuerpo_a.velocidad_x + cuerpo_b.velocidad_x
-    # vy = cuerpo_a.velocidad_y + cuerpo_b.velocidad_y
-
     cuerpo = Planeta(masa=masa_total, posicion=[x, y], velocidad=[vx, vy])
 
     return cuerpo
-    # lista_n = [i for i in range(n)]
 
-    # lista_m = [i for i in range(m)]
+def union_fuerza(par):
+    cuerpo1, cuerpo2 = par
+    return calcular_fuerza(cuerpo1, cuerpo2)

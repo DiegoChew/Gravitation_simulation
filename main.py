@@ -1,7 +1,7 @@
 import pygame
 import sys
 # from processing.objects import Planeta, Luna
-from processing.funciones import calcular_fuerza, generar_planetas, generar_lunas, asignar, fusion
+from processing.funciones import calcular_fuerza, generar_planetas, generar_lunas, asignar, fusion, union_fuerza	
 import yaml
 import multiprocessing as mp
 
@@ -11,9 +11,7 @@ def cargar_config(ruta="config.yaml"):
 
 config = cargar_config()
 
-def wrapper_fuerza(par):
-    cuerpo1, cuerpo2 = par
-    return calcular_fuerza(cuerpo1, cuerpo2)
+
 
 if __name__ == '__main__':
     
@@ -48,12 +46,6 @@ if __name__ == '__main__':
 
         pantalla.fill((0, 0, 20))
     
-        pares = []
-
-        for i in range(len(cuerpos) - 1):
-            for j in range(i + 1, len(cuerpos)):
-                pares.append((cuerpos[i], cuerpos[j]))
-    
         nuevos_cuerpos = cuerpos[:]
         fusiones_pendientes = []
         pares_validos = []
@@ -67,27 +59,26 @@ if __name__ == '__main__':
 
                     pares_validos.append((cuerpos[i], cuerpos[j]))
             
-        for c1, c2 in fusiones_pendientes:
-            if c1 in nuevos_cuerpos and c2 in nuevos_cuerpos:
-                nuevos_cuerpos.remove(c1)
-                nuevos_cuerpos.remove(c2)
-                fusionado = fusion(c1, c2)
+        for cuerpo1, cuerpo2 in fusiones_pendientes:
+            if cuerpo1 in nuevos_cuerpos and cuerpo2 in nuevos_cuerpos:
+                nuevos_cuerpos.remove(cuerpo1)
+                nuevos_cuerpos.remove(cuerpo2)
+                fusionado = fusion(cuerpo1, cuerpo2)
                 nuevos_cuerpos.append(fusionado)
         cuerpos = nuevos_cuerpos
 
         pares_validos = [(c1, c2) for c1, c2 in pares_validos if c1 in cuerpos and c2 in cuerpos]
 
-        fuerza = pool.map(wrapper_fuerza, pares_validos)
+        fuerza = pool.map(union_fuerza, pares_validos)
 #lista para fuerza de cuerpos
         fuerza_cuerpos_x = [0.0]*len(cuerpos)
         fuerza_cuerpos_y = [0.0]*len(cuerpos)
         
-
-        for idx, (c1, c2) in enumerate(pares_validos):
-            resultado = fuerza[idx]
+        for a, (cuerpo1, cuerpo2) in enumerate(pares_validos):
+            resultado = fuerza[a]
             fx, fy = resultado
-            i = cuerpos.index(c1)
-            j = cuerpos.index(c2)
+            i = cuerpos.index(cuerpo1)
+            j = cuerpos.index(cuerpo2)
             fuerza_cuerpos_x[i] += fx
             fuerza_cuerpos_y[i] += fy
             fuerza_cuerpos_x[j] -= fx

@@ -20,5 +20,6 @@ objetos:
   velocidad:
     min: -2
     max: 2
-  escalado: 0.7
-  
+  escalado_a: 0.4
+  escalado_b: 0.00005
+  escalado_c: 4
