@@ -91,7 +91,7 @@ El metodo usado: simulación por tiempo discreto.
 
 Para dicho método se usa la recursión:
 
-$$\textbf{v}_{n+1}=\textbf{v}_{n}+\textbf{a}\cdot\Delta t\qquad  \qquad \textbf{x}_{n+1}=\textbf{x}_{n}+\textbf{v}_{n+1}\cdot \Delta t$$ 
+$$v_{n+1}=v_{n}+a\cdot\Delta t\qquad  \qquad x_{n+1}=x_{n}+v_{n+1}\cdot \Delta t$$ 
 
 $\Delta t $ **intervalo de itempo** y $\textbf{a}=\frac{\textbf{F}}{m}$.
 
