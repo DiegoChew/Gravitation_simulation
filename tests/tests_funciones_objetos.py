@@ -56,7 +56,7 @@ m=0
 for i in range(cantidad):
     producto_escalar=planetas[i].velocidad_x*lunas[i].velocidad_x+planetas[i].velocidad_y*lunas[i].velocidad_y
     # print(producto_escalar)
-    if producto_escalar <= 10:
+    if producto_escalar <= 20:
         m=m+1
     else:
         pass

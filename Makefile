@@ -30,6 +30,7 @@ typecheck:
 	mypy processing/
 
 test:
+	@source $(VENV)/bin/activate && \
 	python -m tests.tests_funciones_objetos
 
 build: banner create install run 
