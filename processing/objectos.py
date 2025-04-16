@@ -60,6 +60,6 @@ class Planeta (CuerpoCeleste,Figura):
         __VT = np.sqrt(G * self.masa / r)
 
         #asigna a "luna" su velocidad inicial → v_orbital+v_inicial_planeta
-        luna_a.velocidad_x=(-__VT * dy/r)+self.velocidad_x # 5 de escalado (no es fisico solo demostrativo)
+        luna_a.velocidad_x=(-__VT * dy/r)+self.velocidad_x 
         luna_a.velocidad_y=( __VT * dx/r)+self.velocidad_y
 

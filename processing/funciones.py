@@ -23,7 +23,7 @@ def calcular_fuerza(planeta_a, planeta_b):
 
     r = np.sqrt(dx**2+dy**2+e)#e=1e-30 evita division entre 0
     
-    if r <= np.log(planeta_a.masa)*1.5:
+    if r <= (config['objetos']['escalado_b']*np.arctan(planeta_a.masa)*planeta_b.masa**config['objetos']['escalado_a']+ config['objetos']['escalado_c'])*2:
         return "FUSION"
     __fuerza = -G*planeta_a.masa*planeta_b.masa/(r**2) #F=-G(m1*m2)/r^2
 
@@ -77,6 +77,8 @@ def asignar(planetas,lunas):
                 if n == L:
                     break
 
+#une los cuerpos muy cercanos y forma un nuevo cuerpo
+
 def fusion (cuerpo_a,cuerpo_b):
     masa_total = cuerpo_a.masa + cuerpo_b.masa
     
@@ -91,6 +93,7 @@ def fusion (cuerpo_a,cuerpo_b):
 
     return cuerpo
 
+# para uso de multiprocessing
 def union_fuerza(par):
     cuerpo1, cuerpo2 = par
     return calcular_fuerza(cuerpo1, cuerpo2)
