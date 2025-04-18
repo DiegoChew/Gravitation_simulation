@@ -53,7 +53,6 @@ def generar_lunas(cantidad):
     lunas = []
     for _ in range(cantidad):
         masa = random.gauss(config['objetos']['masa.L']['mu'], config['objetos']['masa.L']['sigma'])
-        
         luna = Luna(masa)
         lunas.append(luna)
     
@@ -64,18 +63,19 @@ def asignar(planetas,lunas):
 
     P=len(planetas)
     L=len(lunas)
-   
-    if L < P:
-        for i in range(L):
-            planetas[i].agregar_luna(lunas[i])
-    else:
-        n=0
-        while n < L:
-            for i in range(P):
-                planetas[i].agregar_luna(lunas[n])
-                n=n+1
-                if n == L:
-                    break
+    n=0
+    i=0
+    while n < L:
+        planetas[i].agregar_luna(lunas[n])
+        if i == L-1:
+            break
+        elif i == P-1:
+            i=0
+            n=n+1
+        else:
+            i=i+1
+            n=n+1
+            
 
 #une los cuerpos muy cercanos y forma un nuevo cuerpo
 

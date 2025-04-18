@@ -96,6 +96,12 @@ if __name__ == '__main__':
             fuerza_cuerpos_x[j] -= fx
             fuerza_cuerpos_y[j] -= fy
 
+        for i in range(len(pares_validos)-2):
+            fx, fy = fuerza[i]
+
+# fuerza [0] - pares_validos[0][0]
+# fuerza [1] - pares_validos[0][1]
+
 # actualiza las posiciones de los cuerpos y los muestra en pantalla
         for i in range(len(cuerpos)):
             cuerpos[i].aplicar_fuerza(fuerza_cuerpos_x[i],fuerza_cuerpos_y[i],config['simulacion']['dt'])
