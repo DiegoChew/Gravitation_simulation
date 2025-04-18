@@ -1,6 +1,6 @@
 import pygame
 import sys
-from processing.funciones import calcular_fuerza, generar_planetas, generar_lunas, asignar, fusion, union_fuerza	
+from processing.funciones import calcular_fuerza, generar_planetas, generar_lunas, asignar, fusion
 import yaml
 import multiprocessing as mp
 
@@ -57,12 +57,12 @@ if __name__ == '__main__':
 
         for i in range(len(cuerpos) - 1):
             for j in range(i + 1, len(cuerpos)):
-                resultado = calcular_fuerza(cuerpos[i], cuerpos[j])
+                resultado = calcular_fuerza((cuerpos[i], cuerpos[j]))
                 if resultado == "FUSION":
                     fusiones_pendientes.append((cuerpos[i], cuerpos[j]))
                 else:
                     pares_validos.append((cuerpos[i], cuerpos[j]))
-
+        print(f"primer{pares_validos}")
 # En la lista de cuerpos para fusion, los elimina y crea un nuevo cuerpo y lo agrega a lista nuevos cuerpos
         for cuerpo1, cuerpo2 in fusiones_pendientes:
             if cuerpo1 in nuevos_cuerpos and cuerpo2 in nuevos_cuerpos:
@@ -75,9 +75,10 @@ if __name__ == '__main__':
 # Me identifica en tupla los cuerpos validos para calcular la fuerza entre ellos con pool de multiprocessing
         pares_validos = [(cuerpo1, cuerpo2) for cuerpo1, cuerpo2 in pares_validos if cuerpo1 in cuerpos and cuerpo2 in cuerpos]
 
+        print(f"segundo{pares_validos}")
 # Calcula la fuerza de los cuerpos
 
-        fuerza = pool.map(union_fuerza, pares_validos)
+        fuerza = pool.map(calcular_fuerza, pares_validos)
 
 # lista para fuerza de cuerpos
         fuerza_cuerpos_x = [0.0]*len(cuerpos)

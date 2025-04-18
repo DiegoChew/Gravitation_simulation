@@ -13,7 +13,8 @@ config = cargar_config()
 
 
 #calcula la fuerza entre dos planetas
-def calcular_fuerza(planeta_a, planeta_b):
+def calcular_fuerza(par_planeta):
+    planeta_a,planeta_b=par_planeta
     G=6.674e-11
     e=1e-30
 
@@ -25,6 +26,7 @@ def calcular_fuerza(planeta_a, planeta_b):
     
     if r <= (config['objetos']['escalado_b']*np.arctan(planeta_a.masa)*planeta_b.masa**config['objetos']['escalado_a']+ config['objetos']['escalado_c'])*2:
         return "FUSION"
+    
     __fuerza = -G*planeta_a.masa*planeta_b.masa/(r**2) #F=-G(m1*m2)/r^2
 
     fx = __fuerza * dx / r #componente en x de F
@@ -65,6 +67,7 @@ def asignar(planetas,lunas):
     L=len(lunas)
     n=0
     i=0
+
     while n < L:
         planetas[i].agregar_luna(lunas[n])
         if i == L-1:
@@ -92,8 +95,3 @@ def fusion (cuerpo_a,cuerpo_b):
     cuerpo = Planeta(masa=masa_total, posicion=[x, y], velocidad=[vx, vy])
 
     return cuerpo
-
-# para uso de multiprocessing
-def union_fuerza(par):
-    cuerpo1, cuerpo2 = par
-    return calcular_fuerza(cuerpo1, cuerpo2)
