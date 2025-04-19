@@ -24,7 +24,9 @@ def calcular_fuerza(par_planeta):
 
     r = np.sqrt(dx**2+dy**2+e)#e=1e-30 evita division entre 0
     
-    if r <= (config['objetos']['escalado_b']*np.arctan(planeta_a.masa)*planeta_b.masa**config['objetos']['escalado_a']+ config['objetos']['escalado_c'])*2:
+    distancia = (config['objetos']['escalado_b']*np.arctan(planeta_a.masa)*planeta_b.masa**config['objetos']['escalado_a']+ config['objetos']['escalado_c'])*2
+    
+    if r <= distancia:
         return "FUSION"
     
     __fuerza = -G*planeta_a.masa*planeta_b.masa/(r**2) #F=-G(m1*m2)/r^2
@@ -67,7 +69,7 @@ def asignar(planetas,lunas):
     L=len(lunas)
     n=0
     i=0
-
+    
     while n < L:
         planetas[i].agregar_luna(lunas[n])
         if i == L-1:
