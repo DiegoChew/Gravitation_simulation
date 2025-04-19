@@ -69,7 +69,9 @@ def asignar(planetas,lunas):
     L=len(lunas)
     n=0
     i=0
-    
+    if P==0:
+        print("❌❌❌ No existen planetas a los que aignarles lunas.❌❌❌")
+        
     while n < L:
         planetas[i].agregar_luna(lunas[n])
         if i == L-1:
