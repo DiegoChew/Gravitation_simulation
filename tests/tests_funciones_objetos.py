@@ -2,16 +2,25 @@ from processing.funciones import calcular_fuerza,generar_planetas, generar_lunas
 from processing.objectos import Planeta
 import numpy as np
 import random 
+import yaml
+from pathlib import Path
 
+def cargar_config():
+    ruta_config = Path(__file__).parent.parent / "config.yaml"
+    
+    with open(ruta_config, 'r') as archivo:
+        return yaml.safe_load(archivo) 
+config = cargar_config()
 
 masa=1e20
-
-x=[np.log(masa)*2,np.log(masa)]
+x_1=(config['objetos']['escalado_b']*np.arctan(masa)*masa**config['objetos']['escalado_a']+ config['objetos']['escalado_c'])*2.5
+x_2=(config['objetos']['escalado_b']*np.arctan(masa)*masa**config['objetos']['escalado_a']+ config['objetos']['escalado_c'])*1.5
+x=[x_1,x_2]
 
 for i in x:
     planeta1 = Planeta(masa, posicion=[0, 0], velocidad=[0, 0])
     planeta2 = Planeta(masa, posicion=[i, 0], velocidad=[0, 0])
-    resultado = calcular_fuerza(planeta1, planeta2)
+    resultado = calcular_fuerza((planeta1, planeta2))
     if i == x[0] and len(resultado) == 2 :
         print("✅ Test calcular_fuerza: pasó")
     elif i == x[1] and resultado == "FUSION" :
@@ -40,7 +49,7 @@ n=0
 asignar(planetas,lunas)
 
 for i in range(cantidad):
-    fuerza = calcular_fuerza(planetas[i],lunas[i])
+    fuerza = calcular_fuerza((planetas[i],lunas[i]))
     if fuerza == "FUSION":
         pass
     else:
@@ -56,7 +65,7 @@ m=0
 for i in range(cantidad):
     producto_escalar=planetas[i].velocidad_x*lunas[i].velocidad_x+planetas[i].velocidad_y*lunas[i].velocidad_y
     # print(producto_escalar)
-    if producto_escalar <= 10:
+    if producto_escalar <= 20:
         m=m+1
     else:
         pass

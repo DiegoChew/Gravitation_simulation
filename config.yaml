@@ -21,5 +21,5 @@ objetos:
     min: -2
     max: 2
   escalado_a: 0.4
-  escalado_b: 0.00005
+  escalado_b: 0.00002
   escalado_c: 4

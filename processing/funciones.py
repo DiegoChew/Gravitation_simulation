@@ -13,7 +13,8 @@ config = cargar_config()
 
 
 #calcula la fuerza entre dos planetas
-def calcular_fuerza(planeta_a, planeta_b):
+def calcular_fuerza(par_planeta):
+    planeta_a,planeta_b=par_planeta
     G=6.674e-11
     e=1e-30
 
@@ -23,8 +24,11 @@ def calcular_fuerza(planeta_a, planeta_b):
 
     r = np.sqrt(dx**2+dy**2+e)#e=1e-30 evita division entre 0
     
-    if r <= np.log(planeta_a.masa)*1.5:
+    distancia = (config['objetos']['escalado_b']*np.arctan(planeta_a.masa)*planeta_b.masa**config['objetos']['escalado_a']+ config['objetos']['escalado_c'])*2
+    
+    if r <= distancia:
         return "FUSION"
+    
     __fuerza = -G*planeta_a.masa*planeta_b.masa/(r**2) #F=-G(m1*m2)/r^2
 
     fx = __fuerza * dx / r #componente en x de F
@@ -53,7 +57,6 @@ def generar_lunas(cantidad):
     lunas = []
     for _ in range(cantidad):
         masa = random.gauss(config['objetos']['masa.L']['mu'], config['objetos']['masa.L']['sigma'])
-        
         luna = Luna(masa)
         lunas.append(luna)
     
@@ -64,18 +67,24 @@ def asignar(planetas,lunas):
 
     P=len(planetas)
     L=len(lunas)
-   
-    if L < P:
-        for i in range(L):
-            planetas[i].agregar_luna(lunas[i])
-    else:
-        n=0
-        while n < L:
-            for i in range(P):
-                planetas[i].agregar_luna(lunas[n])
-                n=n+1
-                if n == L:
-                    break
+    n=0
+    i=0
+    if P==0:
+        print("❌❌❌ No existen planetas a los que aignarles lunas.❌❌❌")
+        
+    while n < L:
+        planetas[i].agregar_luna(lunas[n])
+        if i == L-1:
+            break
+        elif i == P-1:
+            i=0
+            n=n+1
+        else:
+            i=i+1
+            n=n+1
+            
+
+#une los cuerpos muy cercanos y forma un nuevo cuerpo
 
 def fusion (cuerpo_a,cuerpo_b):
     masa_total = cuerpo_a.masa + cuerpo_b.masa
@@ -90,7 +99,3 @@ def fusion (cuerpo_a,cuerpo_b):
     cuerpo = Planeta(masa=masa_total, posicion=[x, y], velocidad=[vx, vy])
 
     return cuerpo
-
-def union_fuerza(par):
-    cuerpo1, cuerpo2 = par
-    return calcular_fuerza(cuerpo1, cuerpo2)

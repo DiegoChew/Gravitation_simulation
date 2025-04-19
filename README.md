@@ -1,6 +1,6 @@
 # Simulación Gravitacional de Multiples Cuerpos
 
-Simula la intracción gravitacional de mutiples objetos creados de forma aleatoria meditante la fuerza de gravitación de Newton.
+Simula la intracción gravitacional de mutiples objetos creados de forma aleatoria meditante la fuerza de gravitación de Newton, considerndo el choque entre cuerpos como una colisión perfectamente inelásatica.
 
 
 
@@ -45,12 +45,6 @@ Para ejecutar tests:
 
 Los cuerpos tomados en la simulación son planetas y lunas.
 
-En un rango definido $r$ se fusionan creando un nuevo objeto que hereda la suma de sus caracteristicas.
-
- $$r= 1.5*ln(m)$$
-
- Siendo $m$ la masa de uno de los cuerpos.
-
 ### Planetas 
 
 Caractesiticas Principales:
@@ -73,7 +67,7 @@ Caractesiticas Principales:
 
 Tanto los planetas como lunas comparten que su dimensiónes son proporcionales a su masa dada por la siguiente relación:
 
-$$B\cdot\arctan(m)\cdot m^{A}+C$$
+$$d=B\cdot\arctan(m)\cdot m^{A}+C$$
 
 Donde A, B, C, **constantes de propocionalidad** y $m$ masa del cuerpo.
 

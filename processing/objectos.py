@@ -2,7 +2,15 @@ from abc import ABC, abstractmethod
 from processing.Figuras import Figura
 import numpy as np
 import random
+import yaml
+from pathlib import Path
 
+def cargar_config():
+    ruta_config = Path(__file__).parent.parent / "config.yaml"
+    
+    with open(ruta_config, 'r') as archivo:
+        return yaml.safe_load(archivo) 
+config = cargar_config()
 #clase padre
 class CuerpoCeleste(ABC):
     
@@ -14,7 +22,8 @@ class CuerpoCeleste(ABC):
         self.velocidad_y=velocidad[1]
 
     #Cambia la posicion del cuerpo según la fuerza ejercida en el
-    def aplicar_fuerza(self, fuerza_x, fuerza_y, delta_time):
+    def aplicar_fuerza(self, fuerza_x, fuerza_y):
+        delta_time=config['simulacion']['dt']
         # F = m*a → a = F/m
         aceleracion_x = fuerza_x / self.masa
         aceleracion_y = fuerza_y / self.masa
@@ -60,6 +69,6 @@ class Planeta (CuerpoCeleste,Figura):
         __VT = np.sqrt(G * self.masa / r)
 
         #asigna a "luna" su velocidad inicial → v_orbital+v_inicial_planeta
-        luna_a.velocidad_x=(-__VT * dy/r)+self.velocidad_x # 5 de escalado (no es fisico solo demostrativo)
+        luna_a.velocidad_x=(-__VT * dy/r)+self.velocidad_x 
         luna_a.velocidad_y=( __VT * dx/r)+self.velocidad_y
 
