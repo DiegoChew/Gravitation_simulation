@@ -1,6 +1,6 @@
 import pygame
 import sys
-from processing.funciones import calcular_fuerza, generar_planetas, generar_lunas, asignar, fusion
+from processing.funciones import calcular_fuerza, asignar, fusion, Generar_cuerpos
 import yaml
 import multiprocessing as mp
 
@@ -21,10 +21,16 @@ if __name__ == '__main__':
     reloj = pygame.time.Clock()
 
 #generación de cuerpos
-    planetas = generar_planetas(config['simulacion']['cantidad.P'])
-    lunas=generar_lunas(config['simulacion']['cantidad.L'])
-    asignar(planetas,lunas)
-    cuerpos=lunas+planetas
+    # planetas = generar_planetas(config['simulacion']['cantidad.P'])
+    # lunas=generar_lunas(config['simulacion']['cantidad.L'])
+    cuerpos_celestes = Generar_cuerpos(cantidad_planetas=config['simulacion']['cantidad.P'],cantidad_lunas=config['simulacion']['cantidad.L'])
+    
+    if len(cuerpos_celestes.planetas) != 0:
+        asignar(cuerpos_celestes.planetas,cuerpos_celestes.lunas)
+    else:
+        pass
+
+    cuerpos=cuerpos_celestes.planetas+cuerpos_celestes.lunas
 
 #cantidad de nucleos usados
     num_procesos= mp.cpu_count()-2
@@ -41,10 +47,10 @@ if __name__ == '__main__':
 
 #crea una tupla por cada combinación de cuerpos, sin repetición 
         pares = [(cuerpos[i], cuerpos[j]) for i in range(len(cuerpos)) for j in range(i+1, len(cuerpos))]
-
+        
 # Calcula la fuerza de los cuerpos con multiprocessing
         fuerza = pool.map(calcular_fuerza, pares)
-
+        # print(fuerza)
 # lista para fuerza de cuerpos
         fuerza_cuerpos_x = [0.0]*len(cuerpos)
         fuerza_cuerpos_y = [0.0]*len(cuerpos)

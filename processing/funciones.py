@@ -36,31 +36,43 @@ def calcular_fuerza(par_planeta):
 
     return fx, fy
 
+class Generar_cuerpos ():
+
+    def __init__(self,cantidad_planetas,cantidad_lunas):
+        self.cantidad_planetas=cantidad_planetas
+        self.cantidad_lunas=cantidad_lunas
+        self.planetas=self.generar_planetas()
+        self.lunas=self.generar_lunas()
+
+
 #De una constante 'cantidad' se crea una lista con esa cantidad de planetas
-def generar_planetas(cantidad):
-    planetas = []
-    for _ in range(cantidad):
-        masa = random.gauss(config['objetos']['masa.P']['mu'], config['objetos']['masa.P']['sigma'])
-        # masa = random.gauss(1e20, config['objetos']['masa.P']['sigma'])
+    def coor_pos (self):
         x = random.uniform(config['objetos']['posicion_x']['min'], config['objetos']['posicion_x']['max'])
         y = random.uniform(config['objetos']['posicion_y']['min'], config['objetos']['posicion_y']['max'])
         vx = random.uniform(config['objetos']['velocidad']['min'], config['objetos']['velocidad']['max'])
         vy = random.uniform(config['objetos']['velocidad']['min'], config['objetos']['velocidad']['max'])
-        
-        planeta = Planeta(masa=masa, posicion=[x, y], velocidad=[vx, vy])
-        planetas.append(planeta)
+        return (x,y,vx,vy)
     
-    return planetas
+    def generar_planetas(self):
+        planetas = []
+        for _ in range(self.cantidad_planetas):
+            masa = random.gauss(config['objetos']['masa.P']['mu'], config['objetos']['masa.P']['sigma'])
+            coord_pos=self.coor_pos()
+            planeta = Planeta(masa=masa, posicion=[coord_pos[0], coord_pos[1]], velocidad=[coord_pos[2], coord_pos[3]])
+            planetas.append(planeta)
+        
+        return planetas
 
 #Lo mismo pero para lunas
-def generar_lunas(cantidad):
-    lunas = []
-    for _ in range(cantidad):
-        masa = random.gauss(config['objetos']['masa.L']['mu'], config['objetos']['masa.L']['sigma'])
-        luna = Luna(masa)
-        lunas.append(luna)
-    
-    return lunas
+    def generar_lunas(self):
+        lunas = []
+        for _ in range(self.cantidad_lunas):
+            masa = random.gauss(config['objetos']['masa.L']['mu'], config['objetos']['masa.L']['sigma'])
+            coord_pos=self.coor_pos()
+            luna = Luna(masa=masa, posicion=[coord_pos[0], coord_pos[1]], velocidad=[coord_pos[2], coord_pos[3]])
+            lunas.append(luna)
+        
+        return lunas
 
 #asigna de manera "aleatoria", ya que de por si planetas y lunas lo son.
 def asignar(planetas,lunas):
@@ -69,19 +81,17 @@ def asignar(planetas,lunas):
     L=len(lunas)
     n=0
     i=0
-    if P==0:
-        print("❌❌❌ No existen planetas a los que aignarles lunas.❌❌❌")
-        
-    while n < L:
-        planetas[i].agregar_luna(lunas[n])
-        if i == L-1:
-            break
-        elif i == P-1:
-            i=0
-            n=n+1
-        else:
-            i=i+1
-            n=n+1
+    if P!=0:      
+        while n < L:
+            planetas[i].agregar_luna(lunas[n])
+            if i == L-1:
+                break
+            elif i == P-1:
+                i=0
+                n=n+1
+            else:
+                i=i+1
+                n=n+1
             
 
 #une los cuerpos muy cercanos y forma un nuevo cuerpo
