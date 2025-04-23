@@ -1,6 +1,7 @@
 import pygame
 import sys
-from processing.funciones import calcular_fuerza, asignar, fusion, Generar_cuerpos
+from processing.funciones import calcular_fuerza, asignar,fusionar, Generar_cuerpos
+# from processing.objectos import Planeta
 import yaml
 import multiprocessing as mp
 
@@ -21,14 +22,13 @@ if __name__ == '__main__':
     reloj = pygame.time.Clock()
 
 #generación de cuerpos
-    # planetas = generar_planetas(config['simulacion']['cantidad.P'])
-    # lunas=generar_lunas(config['simulacion']['cantidad.L'])
-    cuerpos_celestes = Generar_cuerpos(cantidad_planetas=config['simulacion']['cantidad.P'],cantidad_lunas=config['simulacion']['cantidad.L'])
+
+    Cplanetas = config['simulacion']['cantidad.P']
+    Clunas = config['simulacion']['cantidad.L']
+
+    cuerpos_celestes = Generar_cuerpos(cantidad_planetas=Cplanetas,cantidad_lunas=Clunas)
     
-    if len(cuerpos_celestes.planetas) != 0:
-        asignar(cuerpos_celestes.planetas,cuerpos_celestes.lunas)
-    else:
-        pass
+    asignar(cuerpos_celestes.planetas,cuerpos_celestes.lunas)
 
     cuerpos=cuerpos_celestes.planetas+cuerpos_celestes.lunas
 
@@ -72,25 +72,23 @@ if __name__ == '__main__':
                 fuerza_cuerpos_x[j] -= fx
                 fuerza_cuerpos_y[j] -= fy
 
-
-
 # actualiza las posiciones de los cuerpos y los muestra en pantalla
         for i in range(len(cuerpos)):
             cuerpos[i].aplicar_fuerza(fuerza_cuerpos_x[i],fuerza_cuerpos_y[i])
             cuerpos[i].dibujar(pantalla)
+
 #fusiona los cuerpos y los elimina de la lista cuerpos
         for cuerpo1, cuerpo2 in fusiones_pendientes:
             if cuerpo1 in cuerpos and cuerpo2 in cuerpos:
                 cuerpos.remove(cuerpo1)
                 cuerpos.remove(cuerpo2)
-                fusionado = fusion(cuerpo1, cuerpo2)
+                fusionado = fusionar(cuerpo1, cuerpo2)
                 cuerpos.append(fusionado)
+
         pygame.display.flip()
         reloj.tick(60)
 
 pygame.quit()
 sys.exit()
 
-# Estamos calculando 2 veces la fuerza, pero es necesario para poder usar multiprocessing y a su vez poder filtrar los cuerpos
-# a fusionar y cuerpos a calcular fuerza.
-############# SOLUCIONADO   
+

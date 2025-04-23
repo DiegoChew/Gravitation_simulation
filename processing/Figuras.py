@@ -24,12 +24,14 @@ class Figura():
         #figura aleatoria
         self.__tipo_figura = random.choice(["circulo", "rectangulo", "triangulo"])
 
-        self.__r = config['objetos']['escalado_b']*np.arctan(self.masa)*self.masa**config['objetos']['escalado_a'] + config['objetos']['escalado_c']#tamaño en relación a la masa
+        A = config['objetos']['escalado_a']
+        B = config['objetos']['escalado_b']
+        C = config['objetos']['escalado_c']
+
+        self.__r = B*np.arctan(self.masa)*self.masa**A + C#tamaño en relación a la masa
         # self.radio = self.masa*config['objetos']['escalado']
 
-    def dibujar(self, pantalla):
-        x = self.posicion_x
-        y = self.posicion_y 
+    def dibujar_figura(self, pantalla,x,y):
         if self.__tipo_figura == "circulo":
             pygame.draw.circle(
                 pantalla,
