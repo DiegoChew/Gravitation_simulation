@@ -71,6 +71,13 @@ if __name__ == '__main__':
                 fuerza_cuerpos_y[i] += fy
                 fuerza_cuerpos_x[j] -= fx
                 fuerza_cuerpos_y[j] -= fy
+
+
+
+# actualiza las posiciones de los cuerpos y los muestra en pantalla
+        for i in range(len(cuerpos)):
+            cuerpos[i].aplicar_fuerza(fuerza_cuerpos_x[i],fuerza_cuerpos_y[i])
+            cuerpos[i].dibujar(pantalla)
 #fusiona los cuerpos y los elimina de la lista cuerpos
         for cuerpo1, cuerpo2 in fusiones_pendientes:
             if cuerpo1 in cuerpos and cuerpo2 in cuerpos:
@@ -78,13 +85,6 @@ if __name__ == '__main__':
                 cuerpos.remove(cuerpo2)
                 fusionado = fusion(cuerpo1, cuerpo2)
                 cuerpos.append(fusionado)
-
-# actualiza las posiciones de los cuerpos y los muestra en pantalla
-        for i in range(len(cuerpos)):
-            cuerpos[i].aplicar_fuerza(fuerza_cuerpos_x[i],fuerza_cuerpos_y[i])
-            cuerpos[i].dibujar(pantalla)
-
-    
         pygame.display.flip()
         reloj.tick(60)
 
