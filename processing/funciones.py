@@ -10,8 +10,69 @@ def cargar_config():
     with open(ruta_config, 'r') as archivo:
         return yaml.safe_load(archivo) 
 config = cargar_config()
+class Generar_cuerpos ():
+
+    def __init__(self,cantidad_planetas,cantidad_lunas):
+        self.cantidad_planetas=cantidad_planetas
+        self.cantidad_lunas=cantidad_lunas
+        self.planetas=self.generar_planetas()
+        self.lunas=self.generar_lunas()
 
 
+#De una constante 'cantidad' se crea una lista con esa cantidad de planetas
+    def coor_pos (self):
+        min_x=config['objetos']['posicion_x']['min']
+        max_x=config['objetos']['posicion_x']['max']
+        min_y=config['objetos']['posicion_y']['min']
+        max_y=config['objetos']['posicion_y']['max']
+
+        min_v=config['objetos']['velocidad']['min']
+        max_v=config['objetos']['velocidad']['max']
+        
+        x = random.uniform(min_x, max_x)
+        y = random.uniform(min_y, max_y)
+        vx = random.uniform(min_v, max_v)
+        vy = random.uniform(min_v, max_v)
+
+        return (x,y,vx,vy)
+    
+    def generar_planetas(self):
+        planetas = []
+        for _ in range(self.cantidad_planetas):
+            mu_m = config['objetos']['masa.P']['mu']
+            m = config['objetos']['masa.P']['sigma']
+            masa = random.gauss(mu_m, m)
+
+            coord_pos=self.coor_pos()
+            x = coord_pos[0]
+            y = coord_pos[1]
+            vx = coord_pos[2]
+            vy = coord_pos[3]
+
+            planeta = Planeta(masa=masa, posicion=[x,y], velocidad=[vx,vy])
+            planetas.append(planeta)
+        
+        return planetas
+
+#Lo mismo pero para lunas
+    def generar_lunas(self):
+        lunas = []
+        for _ in range(self.cantidad_lunas):
+            mu_m = config['objetos']['masa.L']['mu']
+            m = config['objetos']['masa.L']['sigma']
+            masa = random.gauss(mu_m, m)
+
+            coord_pos=self.coor_pos()
+            x = coord_pos[0]
+            y = coord_pos[1]
+            vx = coord_pos[2]
+            vy = coord_pos[3]
+            
+            luna = Luna(masa=masa, posicion=[x,y], velocidad=[vx,vy])
+            lunas.append(luna)
+        
+        return lunas
+    
 #calcula la fuerza entre dos planetas
 def calcular_fuerza(par_planeta):
     planeta_a,planeta_b=par_planeta
@@ -24,7 +85,11 @@ def calcular_fuerza(par_planeta):
 
     r = np.sqrt(dx**2+dy**2+e)#e=1e-30 evita division entre 0
     
-    distancia = (config['objetos']['escalado_b']*np.arctan(planeta_a.masa)*planeta_b.masa**config['objetos']['escalado_a']+ config['objetos']['escalado_c'])*2
+    A = config['objetos']['escalado_a']
+    B = config['objetos']['escalado_b']
+    C = config['objetos']['escalado_c']
+
+    distancia = (B*np.arctan(planeta_a.masa)*planeta_b.masa**A+ C)*2
     
     if r <= distancia:
         return "FUSION"
@@ -36,32 +101,6 @@ def calcular_fuerza(par_planeta):
 
     return fx, fy
 
-#De una constante 'cantidad' se crea una lista con esa cantidad de planetas
-def generar_planetas(cantidad):
-    planetas = []
-    for _ in range(cantidad):
-        masa = random.gauss(config['objetos']['masa.P']['mu'], config['objetos']['masa.P']['sigma'])
-        # masa = random.gauss(1e20, config['objetos']['masa.P']['sigma'])
-        x = random.uniform(config['objetos']['posicion_x']['min'], config['objetos']['posicion_x']['max'])
-        y = random.uniform(config['objetos']['posicion_y']['min'], config['objetos']['posicion_y']['max'])
-        vx = random.uniform(config['objetos']['velocidad']['min'], config['objetos']['velocidad']['max'])
-        vy = random.uniform(config['objetos']['velocidad']['min'], config['objetos']['velocidad']['max'])
-        
-        planeta = Planeta(masa=masa, posicion=[x, y], velocidad=[vx, vy])
-        planetas.append(planeta)
-    
-    return planetas
-
-#Lo mismo pero para lunas
-def generar_lunas(cantidad):
-    lunas = []
-    for _ in range(cantidad):
-        masa = random.gauss(config['objetos']['masa.L']['mu'], config['objetos']['masa.L']['sigma'])
-        luna = Luna(masa)
-        lunas.append(luna)
-    
-    return lunas
-
 #asigna de manera "aleatoria", ya que de por si planetas y lunas lo son.
 def asignar(planetas,lunas):
 
@@ -69,33 +108,42 @@ def asignar(planetas,lunas):
     L=len(lunas)
     n=0
     i=0
-    if P==0:
-        print("❌❌❌ No existen planetas a los que aignarles lunas.❌❌❌")
-        
-    while n < L:
-        planetas[i].agregar_luna(lunas[n])
-        if i == L-1:
-            break
-        elif i == P-1:
-            i=0
-            n=n+1
-        else:
-            i=i+1
-            n=n+1
-            
+    if P!=0:
+
+        while n < L:
+            planetas[i].agregar_luna(lunas[n])
+            if i == L-1:
+                break
+            elif i == P-1:
+                i=0
+                n=n+1
+            else:
+                i=i+1
+                n=n+1
+    else:
+        pass            
 
 #une los cuerpos muy cercanos y forma un nuevo cuerpo
 
-def fusion (cuerpo_a,cuerpo_b):
+def fusionar (*cuerpos):
+
+    if len(cuerpos) == 1:
+        cuerpo_a,cuerpo_b = cuerpos[0]
+    else:
+        cuerpo_a,cuerpo_b = cuerpos[:2]
+
     masa_total = cuerpo_a.masa + cuerpo_b.masa
-    
+
     x = (cuerpo_a.posicion_x * cuerpo_a.masa + cuerpo_b.posicion_x * cuerpo_b.masa) / masa_total
     y = (cuerpo_a.posicion_y * cuerpo_a.masa + cuerpo_b.posicion_y * cuerpo_b.masa) / masa_total
     
     # Conservación del momento lineal (velocidad promedio ponderada)
     vx = (cuerpo_a.velocidad_x * cuerpo_a.masa + cuerpo_b.velocidad_x * cuerpo_b.masa) / masa_total
     vy = (cuerpo_a.velocidad_y * cuerpo_a.masa + cuerpo_b.velocidad_y * cuerpo_b.masa) / masa_total
-
-    cuerpo = Planeta(masa=masa_total, posicion=[x, y], velocidad=[vx, vy])
+    
+    if masa_total <= 1.5*config["objetos"]["masa.P"]["mu"]:
+        cuerpo = Luna(masa=masa_total, posicion=[x, y], velocidad=[vx, vy])
+    else:
+        cuerpo = Planeta(masa=masa_total, posicion=[x, y], velocidad=[vx, vy])
 
     return cuerpo

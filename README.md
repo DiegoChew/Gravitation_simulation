@@ -24,6 +24,10 @@ Para ejecutar tests:
 
 `make test`
 
+Para ejecutar chequeos estáticos:
+
+`make typecheck`
+
 
 ## Estructura del Proyecto
 

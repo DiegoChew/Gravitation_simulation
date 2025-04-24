@@ -14,7 +14,7 @@ config = cargar_config()
 #clase padre
 class CuerpoCeleste(ABC):
     
-    @abstractmethod
+    # @abstractmethod
     def __init__(self,posicion=[0,0],velocidad=[0,0]):
         self.posicion_x=posicion[0]
         self.posicion_y=posicion[1]
@@ -36,23 +36,36 @@ class CuerpoCeleste(ABC):
         self.posicion_x += self.velocidad_x * delta_time
         self.posicion_y += self.velocidad_y * delta_time
 
+    @abstractmethod
+    def dibujar(self,pantalla):
+        pass
 
 #clase para lunas
 class Luna (CuerpoCeleste, Figura):
-    def __init__ (self, masa):
+    def __init__ (self,masa,posicion,velocidad):
         Figura.__init__(self,masa)
-        CuerpoCeleste.__init__(self)
+        CuerpoCeleste.__init__(self,posicion,velocidad)
+    
+    def dibujar(self, pantalla):
+        self.dibujar_figura(pantalla,self.posicion_x,self.posicion_y)
         
 #clase para planetas
 class Planeta (CuerpoCeleste,Figura):
     def __init__ (self,masa,posicion,velocidad):
         CuerpoCeleste.__init__(self,posicion,velocidad)
         Figura.__init__(self,masa)
-        
+
+    def dibujar(self, pantalla):
+        self.dibujar_figura(pantalla,self.posicion_x,self.posicion_y)
+
     def agregar_luna (self,luna_a):
         G=6.674e-11
         e=1e-30
         pi = np.pi 
+        luna_a.posicion_x=0
+        luna_a.posicion_y=0
+        luna_a.velocidad_x=0
+        luna_a.velocidad_y=0
         #asigna a "luna" una posición cernana al planeta asignado
         luna_a.posicion_r = random.uniform(70,120)
         luna_a.posicion_a = random.uniform(0,2*pi)
