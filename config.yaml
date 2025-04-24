@@ -1,7 +1,7 @@
 simulacion:
   resolucion: [1900,1000]
-  cantidad.P: 100
-  cantidad.L: 100
+  cantidad.P: 10
+  cantidad.L: 200
   dt: 0.5
 
 objetos:

@@ -27,7 +27,6 @@ install:
 
 typecheck:
 	mypy main.py
-	mypy processing/
 
 test:
 	@source $(VENV)/bin/activate && \

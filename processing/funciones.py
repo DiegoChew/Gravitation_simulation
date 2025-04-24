@@ -125,16 +125,25 @@ def asignar(planetas,lunas):
 
 #une los cuerpos muy cercanos y forma un nuevo cuerpo
 
-def fusionar (cuerpo_a,cuerpo_b):
+def fusionar (*cuerpos):
+
+    if len(cuerpos) == 1:
+        cuerpo_a,cuerpo_b = cuerpos[0]
+    else:
+        cuerpo_a,cuerpo_b = cuerpos[:2]
+
     masa_total = cuerpo_a.masa + cuerpo_b.masa
-    
+
     x = (cuerpo_a.posicion_x * cuerpo_a.masa + cuerpo_b.posicion_x * cuerpo_b.masa) / masa_total
     y = (cuerpo_a.posicion_y * cuerpo_a.masa + cuerpo_b.posicion_y * cuerpo_b.masa) / masa_total
     
     # Conservación del momento lineal (velocidad promedio ponderada)
     vx = (cuerpo_a.velocidad_x * cuerpo_a.masa + cuerpo_b.velocidad_x * cuerpo_b.masa) / masa_total
     vy = (cuerpo_a.velocidad_y * cuerpo_a.masa + cuerpo_b.velocidad_y * cuerpo_b.masa) / masa_total
-
-    cuerpo = Planeta(masa=masa_total, posicion=[x, y], velocidad=[vx, vy])
+    
+    if masa_total <= 1.5*config["objetos"]["masa.P"]["mu"]:
+        cuerpo = Luna(masa=masa_total, posicion=[x, y], velocidad=[vx, vy])
+    else:
+        cuerpo = Planeta(masa=masa_total, posicion=[x, y], velocidad=[vx, vy])
 
     return cuerpo
