@@ -1,6 +1,6 @@
 simulacion:
   resolucion: [1900,1000]
-  cantidad.P: 10
+  cantidad.P: 100
   cantidad.L: 200
   dt: 0.5
 
@@ -23,4 +23,4 @@ objetos:
     max: 2
   escalado_a: 0.4
   escalado_b: 0.00002
-  escalado_c: 4
+  escalado_c: 3

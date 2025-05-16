@@ -1,4 +1,4 @@
-from processing.funciones import calcular_fuerza,generar_planetas, generar_lunas, asignar
+from processing.funciones import calcular_fuerza,Generar_cuerpos, asignar
 from processing.objectos import Planeta
 import numpy as np
 import random 
@@ -30,14 +30,15 @@ for i in x:
 
 
 cantidad=random.randint(0,50)
-planetas = generar_planetas(cantidad)
+cuerpos_celestes = Generar_cuerpos(cantidad_planetas=cantidad,cantidad_lunas=cantidad)
+planetas = cuerpos_celestes.planetas
 
 if len(planetas) == cantidad:
     print("✅ Test generacion aleatoria de planetas: pasó")
 else:
     print("❌ Test generacion aleatoria de planetas: falló, no genera la cantidad de planetas esperado")
 
-lunas = generar_lunas(cantidad)
+lunas = cuerpos_celestes.lunas
 
 if len(lunas) == cantidad:
     print("✅ Test generacion aleatoria de lunas: pasó")
