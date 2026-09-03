@@ -1,7 +1,32 @@
-# Simulación Gravitacional de Multiples Cuerpos
+# Simulación gravitacional de múltiples cuerpos
 
-Simula la interacción gravitacional de múltiples objetos creados de forma aleatoria meditante la fuerza de gravitación de Newton, considerando el choque entre cuerpos como una colisión perfectamente inelástica.
+## Descripción
 
+Simulación numérica desarrollada en **Python** para modelar la interacción gravitacional entre múltiples cuerpos mediante la ley de gravitación universal de Newton.
+
+La simulación genera planetas y lunas con propiedades configurables y calcula su evolución temporal a partir de las fuerzas gravitacionales entre los cuerpos. Las colisiones se modelan como colisiones perfectamente inelásticas, fusionando los objetos involucrados.
+
+El proyecto fue desarrollado con una estructura modular y reproducible, incorporando configuración externa, paralelización de cálculos, pruebas automatizadas y automatización de tareas mediante Makefile.
+
+## Características principales
+
+* Simulación de sistemas gravitacionales de múltiples cuerpos.
+* Generación de planetas y lunas con propiedades configurables.
+* Cálculo de interacciones gravitacionales entre pares de cuerpos.
+* Paralelización del cálculo de fuerzas mediante `multiprocessing`.
+* Visualización dinámica de la simulación mediante Pygame.
+* Configuración de parámetros mediante YAML.
+* Pruebas automatizadas.
+* Automatización de instalación, ejecución y pruebas mediante Makefile.
+
+## Tecnologías
+
+* Python
+* multiprocessing
+* Pygame
+* YAML
+* Makefile
+* Bash
 
 
 > Todas las propiedades en **negrita** se encuentran definidas en el archivo .yaml.
